@@ -59,4 +59,19 @@ public class OrderedBatchingApplicationTests {
             entityManager.persist(p3);
         });
     }
+
+    @Test
+    void testProperJDBCBatching() {
+        final int BATCH_SIZE = 5;
+        txRunner.executeInTransaction(entityManager -> {
+            for (int i = 1; i <= 1_000_000; i++) {
+                if(i % BATCH_SIZE == 0) {
+                    entityManager.flush();
+                    entityManager.clear();
+                }
+                Product p = new Product("p" + i);
+                entityManager.persist(p);
+            }
+        });
+    }
 }
