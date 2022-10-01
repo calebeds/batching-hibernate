@@ -45,6 +45,37 @@ class BatchingApplicationTests {
 
 	}
 
+	@Test
+	void testJDBCBatching() {
+		txRunner.executeInTransaction(entityManager -> {
+			Product p1 = new Product("p1");
+			Product p2 = new Product("p2");
+			Product p3 = new Product("p3");
+			Product p4 = new Product("p4");
+			Product p5 = new Product("p5");
+			entityManager.persist(p1);
+			entityManager.persist(p2);
+			entityManager.persist(p3);
+			entityManager.persist(p4);
+			entityManager.persist(p5);
+		});
+	}
+	@Test
+	void testJDBCBatchingWithFlushing() {
+		txRunner.executeInTransaction(entityManager -> {
+			Product p1 = new Product("p1");
+			Product p2 = new Product("p2");
+			Product p3 = new Product("p3");
+			Product p4 = new Product("p4");
+			Product p5 = new Product("p5");
+			entityManager.persist(p1);
+			entityManager.persist(p2);
+			entityManager.flush();
+			entityManager.persist(p3);
+			entityManager.persist(p4);
+			entityManager.persist(p5);
+		});
+	}
 
 
 }
