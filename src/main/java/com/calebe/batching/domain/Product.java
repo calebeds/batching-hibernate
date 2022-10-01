@@ -1,9 +1,8 @@
 package com.calebe.batching.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +12,11 @@ public class Product {
     @GeneratedValue
     private UUID id;
     private String name;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
+
 
     public Product() {
     }
@@ -36,4 +40,14 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+
 }
